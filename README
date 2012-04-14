@@ -1,0 +1,5 @@
+Netinfo
+
+App that shows info about the mobile netwotk in use, such as Cell Id and Location Area Code. 
+
+This is a Java MIDP app that will only work on SonyEricsson phones. (Note that this is not an Android app!)
