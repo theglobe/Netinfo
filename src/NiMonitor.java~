@@ -1,0 +1,57 @@
+package netinfo;
+
+import java.lang.*;
+import javax.microedition.lcdui.*;
+
+class NiMonitor implements Runnable {
+
+    private Form mainForm;
+    private Display display;
+    private int delayTime = 1000; // ms
+    private String mccmnc = "", lac = "", cellid = "";
+
+    public Thread monitor = new Thread(this);
+
+    // Constructor
+    NiMonitor(Form f, Display d) {
+	mainForm = f;
+	display = d;
+	//	delayTime = delay;
+    }
+
+
+    public void run() {
+	while (true) {
+	    try {
+		Thread.sleep(delayTime);
+	    }
+	    catch (InterruptedException e) {
+		break; // exit while statement
+	    }
+
+	    String cellid2  = System.getProperty("com.sonyericsson.net.cellid");
+	    
+	    // Check if lac or cellid has changed
+	    
+	    //	    StringItem item = new StringItem(null, cellid + ";" + cellid2);
+	    //	    mainForm.append(item);
+
+	    if (cellid2 != null && cellid.compareTo(cellid2) != 0) {
+		
+		String lac2    = System.getProperty("com.sonyericsson.net.lac");
+		String mccmnc2 = System.getProperty("com.sonyericsson.net.cmcc") + 
+		    System.getProperty("com.sonyericsson.net.cmnc");
+	
+		lac = lac2;
+		cellid = cellid2;
+		mccmnc = mccmnc2;
+ 
+		StringItem item = new StringItem(null, mccmnc + ";" + lac + ";" + cellid);
+		mainForm.append(item);
+		
+		// Scroll down to the added line
+		display.setCurrentItem(item);
+	    }
+	}
+    }
+}
